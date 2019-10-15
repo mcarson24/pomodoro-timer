@@ -6,6 +6,8 @@ export default class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      desiredWorkTime: 5000,
+      desiredBreakTime: 5000,
       activeTimer: 'workTimer',
       workTimer: 2000,
       breakTimer: 5000,
@@ -14,7 +16,6 @@ export default class App extends React.Component {
     }
   }
   countdown = () => {
-    console.log(this.state)
     const intervalId = setInterval(() => {
       if (this.state[this.state.activeTimer] === 0) {
         Vibration.vibrate([500, 500, 500])
@@ -24,7 +25,6 @@ export default class App extends React.Component {
       this.setState(prevState => ({
         [this.state.activeTimer]: prevState[this.state.activeTimer] - 1000
       }))
-      console.log(this.state)
     }, 1000)
     this.setState({
       [this.state.activeTimer + 'IntervalId']: intervalId
@@ -40,15 +40,19 @@ export default class App extends React.Component {
   }
 
   takeABreak = () => {
-    this.setState({
-      activeTimer: 'breakTimer'
-    })
+    clearInterval(this.state.activeTimer + 'IntervalId')
+    this.setState(prevState => ({
+        activeTimer: 'breakTimer',
+        breakTimer: prevState.desiredBreakTime
+      }))
   }
 
   backToWork = () => {
-    this.setState({
-      activeTimer: 'workTimer'
-    })
+    clearInterval(this.state.activeTimer + 'IntervalId')
+    this.setState(prevstate=> ({
+      activeTimer: 'workTimer',
+      workTimer: prevstate.desiredWorkTime
+    }))
   }
 
   humanReadableTime = time => {
