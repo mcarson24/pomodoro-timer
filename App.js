@@ -6,29 +6,49 @@ export default class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      workTimer: 300000,
-      restTimer: 5000,
-      intervalId: ''
+      activeTimer: 'workTimer',
+      workTimer: 2000,
+      breakTimer: 5000,
+      workTimerIntervalId: '',
+      breakTimerIntervalId: '',
     }
   }
-  componentDidMount() {
-    // setInterval(this.countdown, 1000)
-  }
   countdown = () => {
+    console.log(this.state)
     const intervalId = setInterval(() => {
-      if (this.state.workTimer === 0) {
+      if (this.state[this.state.activeTimer] === 0) {
         Vibration.vibrate([500, 500, 500])
+        clearInterval(this.state[this.state.activeTimer + 'IntervalId'])
         return
       }
       this.setState(prevState => ({
-        workTimer: prevState.workTimer - 1000
+        [this.state.activeTimer]: prevState[this.state.activeTimer] - 1000
       }))
+      console.log(this.state)
     }, 1000)
-    this.setState({intervalId})
+    this.setState({
+      [this.state.activeTimer + 'IntervalId']: intervalId
+    })
   }
 
   pause = () => {
-    clearInterval(this.state.intervalId)
+    clearInterval(this.state[this.state.activeTimer + 'IntervalId'])
+  }
+
+  isActiveTimer = timerName => {
+    return this.state.activeTimer == timerName
+  }
+
+  takeABreak = () => {
+    this.setState({
+      activeTimer: 'breakTimer'
+    })
+  }
+
+  backToWork = () => {
+    this.setState({
+      activeTimer: 'workTimer'
+    })
   }
 
   humanReadableTime = time => {
@@ -41,10 +61,30 @@ export default class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>Work Timer:</Text>
-        <Text>{this.humanReadableTime(this.state.workTimer)}</Text>
-        <Button title="Start" onPress={this.countdown} />
-        <Button title="Pause" onPress={this.pause} />
+        { this.state.activeTimer === 'workTimer' && (
+          <View>
+            <Text style={styles.timerTitle}>Work Timer:</Text>
+            <Text style={styles.timer}>{this.humanReadableTime(this.state.workTimer)}</Text>
+            { this.state.workTimer === 0 && (
+              <Button title="Take A Break"
+                      onPress={this.takeABreak} /> 
+            )}
+          </View>
+        )}
+        { this.state.activeTimer == 'breakTimer' && (
+          <View>
+            <Text style={styles.timerTitle}>Break Timer:</Text>
+            <Text style={styles.timer}>{this.humanReadableTime(this.state.breakTimer)}</Text>
+            { this.state.breakTimer === 0 && (
+              <Button title="Back To Work"
+                      onPress={this.backToWork} /> 
+            )}
+          </View>
+        )}
+        <View style={styles.buttonContainer}>
+          <Button title="Start" onPress={this.countdown} />
+          <Button title="Pause" onPress={this.pause} />
+        </View>
       </View>
     )
   }
@@ -57,4 +97,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-});
+  timerTitle: {
+    fontSize: 24
+  },
+  timer: {
+    fontSize: 56
+  },
+  buttonContainer: {
+    display: 'flex',
+    flexDirection: 'row'
+  },
+})
