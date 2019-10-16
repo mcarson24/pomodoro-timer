@@ -1,5 +1,6 @@
 import React from 'react'
-import {Button, Text, TextInput, StyleSheet, Vibration, View} from 'react-native'
+import {Button, Text, TextInput, TouchableOpacity, StyleSheet, Vibration, View} from 'react-native'
+import Constants from 'expo-constants'
 
 export default class Timer extends React.Component {
 	constructor(props) {
@@ -7,8 +8,8 @@ export default class Timer extends React.Component {
 
 		this.state = {
 			workMode: true,
-			desiredWorkTime: 10000,
-      desiredBreakTime: 5000,
+			desiredWorkTime: 60000,
+      desiredBreakTime: 60000,
       currentTime: '',
       intervalId: '',
       showInputs: false,
@@ -127,58 +128,154 @@ export default class Timer extends React.Component {
 
 	render() {
 		return (
-			<View>
+			<View style={styles.timerContainer}>
+				<View style={styles.timerToggles}>
+					<TouchableOpacity onPress={this.switchTimer} 
+														style={[styles.timerToggleButton, this.state.workMode ? styles.timerToggleButtonActive : styles.timerToggleButtonInactive]}>
+						<Text style={styles.timerToggleButtonText}>Work Timer</Text>
+					</TouchableOpacity>
+					<TouchableOpacity onPress={this.switchTimer} 
+														style={[styles.timerToggleButton, this.state.workMode ? styles.timerToggleButtonInactive : styles.timerToggleButtonActive]}>
+						<Text style={styles.timerToggleButtonText}>Break Timer</Text>
+					</TouchableOpacity>
+				</View>
 				{!this.state.showInputs && (
 					<View>
-		        <Text style={styles.timerTitle}>{this.title()}</Text>
-		        <Text style={styles.timer}>{this.humanReadableTime()}</Text>
+						<View style={styles.timerHeader}>
+			        <Text style={styles.timerTitle}>{this.title()}</Text>
+			        <Text style={styles.timer}>{this.humanReadableTime()}</Text>
+						</View>	
 		        <View style={styles.buttonContainer}>
-		          <Button title="Start" onPress={this.startTimer} />
-		          <Button title="Pause" onPress={this.pause} />
+		          <TouchableOpacity style={styles.timerButtons} onPress={this.countdown}>
+		          	<Text style={styles.timerButtonsText}>Start</Text>
+	          	</TouchableOpacity>
+	          	<TouchableOpacity style={styles.timerButtons} onPress={this.pause}>
+	          		<Text style={styles.timerButtonsText}>Pause</Text>
+	          	</TouchableOpacity>
 		        </View>
-		        <Button title="Reset" onPress={this.reset} />
+		        <View style={styles.resetContainer}>
+			        <TouchableOpacity onPress={this.reset}
+			        									style={styles.reset}>
+			        	<Text style={styles.resetText}>Reset</Text>
+		        	</TouchableOpacity>
+	        	</View>
 	        </View>
 				)}
-        { this.state.currentTime === 0 && (
-          <Button title="Switch Timer"
-                  onPress={this.switchTimer} /> 
-        )}
-        <View>
-        	<Button title="Change Times" onPress={this.toggleInputs}/>
+        <View style={{width: '100%', flexDirection: 'column', alignItems: 'center'}}>
         	{this.state.showInputs && (
-        		<View>
+        		<View >
+	        		<Text style={styles.inputLabels}>Work Time 
+	        			<Text style={{fontSize: 12}}>(in minutes)</Text>:
+        			</Text>
 		        	<TextInput onChangeText={this.handleWorkTimeChange}
 		                   	 keyboardType="numeric"
 		                   	 style={styles.inputs}
+		                   	 placeholder={(this.state.desiredWorkTime / 1000 / 60).toString()}
+		                   	 placeholderTextColor="#000"
 		                   	 />
+	        		<Text style={styles.inputLabels}>Break Time
+	        			<Text style={{fontSize: 12}}>(in minutes)</Text>:
+	        		</Text>
 			        <TextInput onChangeText={this.handleBreakTimeChange}
 		                   	 keyboardType="numeric"
 		                   	 style={styles.inputs}
+		                   	 placeholder={(this.state.desiredBreakTime / 1000 / 60).toString()}
+		                   	 placeholderTextColor="#000"
 		                   	 />
          	 	</View>
       		)}
+      		<TouchableOpacity onPress={this.toggleInputs}>
+      			<Text style={{color: 'white', marginBottom: Constants.statusBarHeight / 2, fontSize: 16}}>Update Times</Text>
+      		</TouchableOpacity>
         </View>
+        {this.state.showInputs && (<View></View>)}
       </View>
 		)
 	}
 }
 
 const styles = StyleSheet.create({
+	timerContainer: {
+		marginTop: Constants.statusBarHeight,
+		width: '85%',
+		flex: 1,
+		flexDirection: 'column',
+		justifyContent: 'space-between',
+		alignItems: 'center'
+	},
+	timerToggles: {
+		flexDirection: 'row',
+		borderRadius: 5,
+		overflow: 'hidden'
+	},
+	timerToggleButton: {
+		padding: 10,
+		paddingHorizontal: 15,
+	},
+	timerToggleButtonText: {
+		color: '#edf2f7',
+	},
+	timerToggleButtonInactive: {
+		backgroundColor: '#5a67d8',
+	},
+	timerToggleButtonActive: {
+		backgroundColor: '#383F85',
+	},
+	timerHeader: {
+		alignItems: 'center'
+	},
 	timerTitle: {
-    fontSize: 24
+    fontSize: 24,
+    color: '#a0aec0'
   },
   timer: {
-    fontSize: 56
+    fontSize: 56,
+    color: '#fff'
+  },
+  resetContainer: {
+  	flexDirection: 'row', 
+  	justifyContent: 'center',
+  	paddingTop: 10,
+  },
+  reset: {
+  	padding: 10,
+  },
+  resetText: {
+  	color: '#a0aec0',
+  	fontSize: 16,
   },
   buttonContainer: {
     display: 'flex',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    width: '55%'
+  },
+  timerButtons: {
+  	backgroundColor: '#5a67d8',
+  	color: '#fff',
+  	flex: 1,
+  	justifyContent: 'center',
+  	alignItems: 'center',
+  	paddingVertical: 15,
+  	borderRadius: 5,
+  	marginHorizontal: 10
+  },
+  timerButtonsText: {
+  	color: '#FFF',
+  	fontSize: 18,
   },
   inputs: {
   	backgroundColor: '#cbd5e0',
   	marginBottom: 15,
   	padding: 5,
   	paddingVertical: 15,
-  	borderRadius: 5
+  	borderRadius: 5,
+  	width: 200,
+  	fontSize: 16,
+  	paddingLeft: 15
+  },
+  inputLabels: {
+  	fontSize: 20,
+  	marginBottom: 10,
+  	color: '#a0aec0'
   }
 })
