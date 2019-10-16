@@ -109,11 +109,13 @@ export default class Timer extends React.Component {
 		return (
 			<View style={styles.timerContainer}>
 				<View style={styles.timerToggles}>
-					<TouchableOpacity onPress={this.switchTimer} style={[ this.state.workMode ? styles.timerToggleButtonActive : styles.timerToggleButton]}>
-						<Text>Work Timer</Text>
+					<TouchableOpacity onPress={this.switchTimer} 
+														style={[styles.timerToggleButton, this.state.workMode ? styles.timerToggleButtonActive : styles.timerToggleButtonInactive]}>
+						<Text style={styles.timerToggleButtonText}>Work Timer</Text>
 					</TouchableOpacity>
-					<TouchableOpacity onPress={this.switchTimer} style={[ this.state.workMode ? styles.timerToggleButton : styles.timerToggleButtonActive]}>
-						<Text>Break Timer</Text>
+					<TouchableOpacity onPress={this.switchTimer} 
+														style={[styles.timerToggleButton, this.state.workMode ? styles.timerToggleButtonInactive : styles.timerToggleButtonActive]}>
+						<Text style={styles.timerToggleButtonText}>Break Timer</Text>
 					</TouchableOpacity>
 				</View>
 				{!this.state.showInputs && (
@@ -130,13 +132,17 @@ export default class Timer extends React.Component {
 	          		<Text style={styles.timerButtonsText}>Pause</Text>
 	          	</TouchableOpacity>
 		        </View>
-		        <Button title="Reset" onPress={this.reset} />
+		        <View style={styles.resetContainer}>
+			        <TouchableOpacity onPress={this.reset}
+			        									style={styles.reset}>
+			        	<Text style={styles.resetText}>Reset</Text>
+		        	</TouchableOpacity>
+	        	</View>
 	        </View>
 				)}
-        <View>
-        	<Button title="Change Times" onPress={this.toggleInputs}/>
+        <View style={{width: '100%', flexDirection: 'column', alignItems: 'center'}}>
         	{this.state.showInputs && (
-        		<View>
+        		<View >
 		        	<TextInput onChangeText={this.handleWorkTimeChange}
 		                   	 keyboardType="numeric"
 		                   	 style={styles.inputs}
@@ -147,7 +153,11 @@ export default class Timer extends React.Component {
 		                   	 />
          	 	</View>
       		)}
+      		<TouchableOpacity onPress={this.toggleInputs}>
+      			<Text style={{color: 'white', marginBottom: Constants.statusBarHeight / 2, fontSize: 16}}>Update Times</Text>
+      		</TouchableOpacity>
         </View>
+        {this.state.showInputs && (<View></View>)}
       </View>
 		)
 	}
@@ -164,16 +174,21 @@ const styles = StyleSheet.create({
 	},
 	timerToggles: {
 		flexDirection: 'row',
+		borderRadius: 5,
+		overflow: 'hidden'
 	},
 	timerToggleButton: {
-		backgroundColor: '#5a67d8',
 		padding: 10,
 		paddingHorizontal: 15,
+	},
+	timerToggleButtonText: {
+		color: '#edf2f7',
+	},
+	timerToggleButtonInactive: {
+		backgroundColor: '#5a67d8',
 	},
 	timerToggleButtonActive: {
 		backgroundColor: '#383F85',
-		padding: 10,
-		paddingHorizontal: 15,
 	},
 	timerHeader: {
 		alignItems: 'center'
@@ -185,6 +200,18 @@ const styles = StyleSheet.create({
   timer: {
     fontSize: 56,
     color: '#fff'
+  },
+  resetContainer: {
+  	flexDirection: 'row', 
+  	justifyContent: 'center',
+  	paddingTop: 10,
+  },
+  reset: {
+  	padding: 10,
+  },
+  resetText: {
+  	color: '#a0aec0',
+  	fontSize: 16,
   },
   buttonContainer: {
     display: 'flex',
@@ -203,12 +230,15 @@ const styles = StyleSheet.create({
   },
   timerButtonsText: {
   	color: '#FFF',
+  	fontSize: 18,
   },
   inputs: {
   	backgroundColor: '#cbd5e0',
   	marginBottom: 15,
   	padding: 5,
   	paddingVertical: 15,
-  	borderRadius: 5
+  	borderRadius: 5,
+  	width: 200,
+  	fontSize: 16
   }
 })
