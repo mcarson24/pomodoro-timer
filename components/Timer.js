@@ -1,5 +1,5 @@
 import React from 'react'
-import {Button, Text, StyleSheet, Vibration, View} from 'react-native'
+import {Button, Text, TextInput, StyleSheet, Vibration, View} from 'react-native'
 
 export default class Timer extends React.Component {
 	constructor(props) {
@@ -60,6 +60,18 @@ export default class Timer extends React.Component {
   	return this.state.workMode ? 'Work Timer' : 'Break Timer'
   }
 
+  handleWorkTimeChange = newTime => {
+  	this.setState({
+  		desiredWorkTime: newTime
+  	}) 
+  }
+
+  handleBreakTimeChange = newTime => {
+  	this.setState({
+  		desiredBreakTime: newTime
+  	})
+  }
+
 	render() {
 		return (
 			<View>
@@ -72,6 +84,16 @@ export default class Timer extends React.Component {
         <View style={styles.buttonContainer}>
           <Button title="Start" onPress={this.countdown} />
           <Button title="Pause" onPress={this.pause} />
+        </View>
+        <View>
+        	<TextInput value={this.state.desiredWorkTime.toString()} 
+                   	 onChangeText={this.handleWorkTimeChange}
+                   	 keyboardType="numeric"
+                   	 />
+	        <TextInput value={this.state.desiredBreakTime.toString()} 
+                   	 onChangeText={this.handleBreakTimeChange}
+                   	 keyboardType="numeric"
+                   	 />
         </View>
       </View>
 		)

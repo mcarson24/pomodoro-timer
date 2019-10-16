@@ -1,7 +1,6 @@
 import React from 'react'
-import { Button, StyleSheet, TextInput, Text, Vibration, View } from 'react-native'
-import { vibrate } from './utils/index.js'
 import Timer from './components/Timer.js'
+import { TextInput, StyleSheet, View } from 'react-native'
 
 export default class App extends React.Component {
   constructor(props) {
@@ -15,7 +14,7 @@ export default class App extends React.Component {
     return (
       <View style={styles.container}>
         { this.state.showWorkTimer && (
-          <Timer workMode={this.state.showWorkTimer}/>
+          <Timer workMode={this.state.showWorkTimer} />
         ) }
       </View>
     )
