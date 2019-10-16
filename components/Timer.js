@@ -134,10 +134,6 @@ export default class Timer extends React.Component {
 	        </View>
 				)}
         <View>
-	        { this.state.currentTime === 0 && (
-	          <Button title="Switch Timer"
-	                  onPress={this.switchTimer} /> 
-	        )}
         	<Button title="Change Times" onPress={this.toggleInputs}/>
         	{this.state.showInputs && (
         		<View>
