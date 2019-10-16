@@ -8,8 +8,8 @@ export default class Timer extends React.Component {
 
 		this.state = {
 			workMode: true,
-			desiredWorkTime: 10000,
-      desiredBreakTime: 5000,
+			desiredWorkTime: 60000,
+      desiredBreakTime: 60000,
       currentTime: '',
       intervalId: '',
       showInputs: false,
@@ -143,13 +143,23 @@ export default class Timer extends React.Component {
         <View style={{width: '100%', flexDirection: 'column', alignItems: 'center'}}>
         	{this.state.showInputs && (
         		<View >
+	        		<Text style={styles.inputLabels}>Work Time 
+	        			<Text style={{fontSize: 12}}>(in minutes)</Text>:
+        			</Text>
 		        	<TextInput onChangeText={this.handleWorkTimeChange}
 		                   	 keyboardType="numeric"
 		                   	 style={styles.inputs}
+		                   	 placeholder={(this.state.desiredWorkTime / 1000 / 60).toString()}
+		                   	 placeholderTextColor="#000"
 		                   	 />
+	        		<Text style={styles.inputLabels}>Break Time
+	        			<Text style={{fontSize: 12}}>(in minutes)</Text>:
+	        		</Text>
 			        <TextInput onChangeText={this.handleBreakTimeChange}
 		                   	 keyboardType="numeric"
 		                   	 style={styles.inputs}
+		                   	 placeholder={(this.state.desiredBreakTime / 1000 / 60).toString()}
+		                   	 placeholderTextColor="#000"
 		                   	 />
          	 	</View>
       		)}
@@ -239,6 +249,12 @@ const styles = StyleSheet.create({
   	paddingVertical: 15,
   	borderRadius: 5,
   	width: 200,
-  	fontSize: 16
+  	fontSize: 16,
+  	paddingLeft: 15
+  },
+  inputLabels: {
+  	fontSize: 20,
+  	marginBottom: 10,
+  	color: '#a0aec0'
   }
 })
