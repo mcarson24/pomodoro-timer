@@ -12,6 +12,7 @@ export default class Timer extends React.Component {
       currentTime: '',
       intervalId: '',
       showInputs: false,
+      timerIsActive: false,
 		}
 	}
 
@@ -22,9 +23,12 @@ export default class Timer extends React.Component {
   }
 
   countdown = () => {
+  	if (this.state.timerIsActive) return
+
     const intervalId = setInterval(() => {
       if (this.state.currentTime === 0) {
         Vibration.vibrate([500, 500, 500])
+        this.setState({timerIsActive: false})
         clearInterval(this.state.intervalId)
         return
       }
@@ -49,7 +53,17 @@ export default class Timer extends React.Component {
   	}
   }
 
+  startTimer = () => {
+  	this.setState({
+  		timerIsActive: true
+  	})
+  	this.countdown()
+  }
+
   pause = () => {
+  	this.setState({
+  		timerIsActive: false
+  	})
     clearInterval(this.state.intervalId)
   }
 
@@ -94,6 +108,7 @@ export default class Timer extends React.Component {
   reset = () => {
   	this.setState(prevState => ({
   		currentTime: prevState.workMode ? prevState.desiredWorkTime : prevState.desiredBreakTime,
+  		timerIsActive: false
   	}))
   	this.pause()
   }
@@ -112,7 +127,7 @@ export default class Timer extends React.Component {
 		        <Text style={styles.timerTitle}>{this.title()}</Text>
 		        <Text style={styles.timer}>{this.humanReadableTime()}</Text>
 		        <View style={styles.buttonContainer}>
-		          <Button title="Start" onPress={this.countdown} />
+		          <Button title="Start" onPress={this.startTimer} />
 		          <Button title="Pause" onPress={this.pause} />
 		        </View>
 		        <Button title="Reset" onPress={this.reset} />
