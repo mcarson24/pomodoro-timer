@@ -2,14 +2,17 @@ import React from 'react'
 import {Button, Text, TextInput, TouchableOpacity, StyleSheet, Vibration, View} from 'react-native'
 import Constants from 'expo-constants'
 
+const START_TIME_WORK = 25 * 60 * 1000
+const START_TIME_BREAK = 5 * 60 * 1000
+
 export default class Timer extends React.Component {
 	constructor(props) {
 		super(props)
 
 		this.state = {
 			workMode: true,
-			desiredWorkTime: 60000,
-      desiredBreakTime: 60000,
+			desiredWorkTime: START_TIME_WORK,
+      desiredBreakTime: START_TIME_BREAK,
       currentTime: '',
       intervalId: '',
       showInputs: false,
@@ -31,6 +34,7 @@ export default class Timer extends React.Component {
         Vibration.vibrate([500, 500, 500])
         this.setState({timerIsActive: false})
         clearInterval(this.state.intervalId)
+        this.switchTimer()
         return
       }
       this.setState(prevState => ({
