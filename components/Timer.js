@@ -11,7 +11,7 @@ export default class Timer extends React.Component {
 
 		this.state = {
 			workMode: true,
-			desiredWorkTime: START_TIME_WORK,
+			desiredWorkTime: 60000,
       desiredBreakTime: START_TIME_BREAK,
       currentTime: '',
       intervalId: '',
@@ -94,9 +94,9 @@ export default class Timer extends React.Component {
 
   handleWorkTimeChange = newTime => {
   	newTime = parseInt(newTime)
-  	console.log(newTime)
   	if (newTime === 0) return
   	const newTimeInMilliseconds = newTime * 60 * 1000
+
   	this.setState(prevState => ({
   		desiredWorkTime: newTimeInMilliseconds,
   		currentTime: prevState.workMode ? newTimeInMilliseconds : prevState.currentTime
@@ -106,9 +106,9 @@ export default class Timer extends React.Component {
 
   handleBreakTimeChange = newTime => {
   	newTime = parseInt(newTime)
-  	console.log(newTime)
   	if (newTime === 0) return
   	const newTimeInMilliseconds = newTime * 60 * 1000
+
   	this.setState(prevState => ({
   		desiredBreakTime: newTimeInMilliseconds,
   		currentTime: !prevState.workMode ? newTimeInMilliseconds : prevState.currentTime
@@ -134,11 +134,11 @@ export default class Timer extends React.Component {
 		return (
 			<View style={styles.timerContainer}>
 				<View style={styles.timerToggles}>
-					<TouchableOpacity onPress={this.switchTimer} 
+					<TouchableOpacity onPress={this.switchTimer} disabled={this.state.workMode}
 														style={[styles.timerToggleButton, this.state.workMode ? styles.timerToggleButtonActive : styles.timerToggleButtonInactive]}>
 						<Text style={styles.timerToggleButtonText}>Work Timer</Text>
 					</TouchableOpacity>
-					<TouchableOpacity onPress={this.switchTimer} 
+					<TouchableOpacity onPress={this.switchTimer}  disabled={!this.state.workMode}
 														style={[styles.timerToggleButton, this.state.workMode ? styles.timerToggleButtonInactive : styles.timerToggleButtonActive]}>
 						<Text style={styles.timerToggleButtonText}>Break Timer</Text>
 					</TouchableOpacity>
@@ -189,13 +189,23 @@ export default class Timer extends React.Component {
          	 	</View>
       		)}
       		<TouchableOpacity onPress={this.toggleInputs}>
-      			<Text style={{color: 'white', marginBottom: Constants.statusBarHeight / 2, fontSize: 16}}>Update Times</Text>
+      			<Text style={styles.updateButton}>
+      				{this.state.showInputs ? 'Save Times' : 'Update Times'}
+      			</Text>
       		</TouchableOpacity>
         </View>
         {this.state.showInputs && (<View></View>)}
       </View>
 		)
 	}
+}
+
+const colors = {
+	indigo: '#5a67d8',
+	indigoDarker: '#383F85',
+	white: '#fff',
+	grayLighter: '#edf2f7',
+	grayDarker: '#a0aec0'
 }
 
 const styles = StyleSheet.create({
@@ -217,24 +227,24 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 15,
 	},
 	timerToggleButtonText: {
-		color: '#edf2f7',
+		color: colors.grayLighter,
 	},
 	timerToggleButtonInactive: {
-		backgroundColor: '#5a67d8',
+		backgroundColor: colors.indigo,
 	},
 	timerToggleButtonActive: {
-		backgroundColor: '#383F85',
+		backgroundColor: colors.indigoDarker,
 	},
 	timerHeader: {
 		alignItems: 'center'
 	},
 	timerTitle: {
     fontSize: 24,
-    color: '#a0aec0'
+    color: colors.grayDarker
   },
   timer: {
     fontSize: 56,
-    color: '#fff'
+    color: colors.white
   },
   resetContainer: {
   	flexDirection: 'row', 
@@ -245,7 +255,7 @@ const styles = StyleSheet.create({
   	padding: 10,
   },
   resetText: {
-  	color: '#a0aec0',
+  	color: colors.grayDarker,
   	fontSize: 16,
   },
   buttonContainer: {
@@ -254,8 +264,8 @@ const styles = StyleSheet.create({
     width: '55%'
   },
   timerButtons: {
-  	backgroundColor: '#5a67d8',
-  	color: '#fff',
+  	backgroundColor: colors.indigo,
+  	color: colors.white,
   	flex: 1,
   	justifyContent: 'center',
   	alignItems: 'center',
@@ -264,11 +274,11 @@ const styles = StyleSheet.create({
   	marginHorizontal: 10
   },
   timerButtonsText: {
-  	color: '#FFF',
+  	color: colors.white,
   	fontSize: 18,
   },
   inputs: {
-  	backgroundColor: '#cbd5e0',
+  	backgroundColor: colors.grayLighter,
   	marginBottom: 15,
   	padding: 5,
   	paddingVertical: 15,
@@ -280,6 +290,11 @@ const styles = StyleSheet.create({
   inputLabels: {
   	fontSize: 20,
   	marginBottom: 10,
-  	color: '#a0aec0'
-  }
+  	color: colors.grayDarker
+  },
+  updateButton: {
+  	color: colors.grayLighter, 
+  	marginBottom: Constants.statusBarHeight / 2, 
+  	fontSize: 18
+  },
 })
