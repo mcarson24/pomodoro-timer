@@ -10,7 +10,8 @@ export default class Timer extends React.Component {
 			desiredWorkTime: 10000,
       desiredBreakTime: 5000,
       currentTime: '',
-      intervalId: ''
+      intervalId: '',
+      showInputs: false,
 		}
 	}
 
@@ -34,6 +35,18 @@ export default class Timer extends React.Component {
     this.setState({
       intervalId
     })
+  }
+
+  updateCurrentTime = () => {
+  	if (this.state.workMode) {
+  		this.setState(prevState => ({
+  			currentTime: prevState.desiredWorkTime
+  		}))
+  	} else {
+  		this.setState(prevState => ({
+  			currentTime: prevState.desiredBreakTime
+  		}))
+  	}
   }
 
   pause = () => {
@@ -61,39 +74,60 @@ export default class Timer extends React.Component {
   }
 
   handleWorkTimeChange = newTime => {
+  	const newTimeInMilliseconds = newTime * 60 * 1000
   	this.setState({
-  		desiredWorkTime: newTime
+  		desiredWorkTime: newTimeInMilliseconds,
+  		currentTime: newTimeInMilliseconds
   	}) 
+  	this.pause()
   }
 
   handleBreakTimeChange = newTime => {
+  	const newTimeInMilliseconds = newTime * 60 * 1000
   	this.setState({
-  		desiredBreakTime: newTime
+  		desiredBreakTime: newTimeInMilliseconds,
+  		currentTime: newTimeInMilliseconds
   	})
+  	this.pause()
+  }
+
+  toggleInputs = () => {
+  	this.setState(prevState => ({
+  		showInputs: !prevState.showInputs
+  	}))
   }
 
 	render() {
 		return (
 			<View>
-        <Text style={styles.timerTitle}>{this.title()}</Text>
-        <Text style={styles.timer}>{this.humanReadableTime()}</Text>
+				{!this.state.showInputs && (
+					<View>
+		        <Text style={styles.timerTitle}>{this.title()}</Text>
+		        <Text style={styles.timer}>{this.humanReadableTime()}</Text>
+		        <View style={styles.buttonContainer}>
+		          <Button title="Start" onPress={this.countdown} />
+		          <Button title="Pause" onPress={this.pause} />
+		        </View>
+	        </View>
+				)}
         { this.state.currentTime === 0 && (
           <Button title="Switch Timer"
                   onPress={this.switchTimer} /> 
         )}
-        <View style={styles.buttonContainer}>
-          <Button title="Start" onPress={this.countdown} />
-          <Button title="Pause" onPress={this.pause} />
-        </View>
         <View>
-        	<TextInput value={this.state.desiredWorkTime.toString()} 
-                   	 onChangeText={this.handleWorkTimeChange}
-                   	 keyboardType="numeric"
-                   	 />
-	        <TextInput value={this.state.desiredBreakTime.toString()} 
-                   	 onChangeText={this.handleBreakTimeChange}
-                   	 keyboardType="numeric"
-                   	 />
+        	<Button title="Change Times" onPress={this.toggleInputs}/>
+        	{this.state.showInputs && (
+        		<View>
+		        	<TextInput onChangeText={this.handleWorkTimeChange}
+		                   	 keyboardType="numeric"
+		                   	 style={styles.inputs}
+		                   	 />
+			        <TextInput onChangeText={this.handleBreakTimeChange}
+		                   	 keyboardType="numeric"
+		                   	 style={styles.inputs}
+		                   	 />
+         	 	</View>
+      		)}
         </View>
       </View>
 		)
@@ -111,4 +145,11 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row'
   },
+  inputs: {
+  	backgroundColor: '#cbd5e0',
+  	marginBottom: 15,
+  	padding: 5,
+  	paddingVertical: 15,
+  	borderRadius: 5
+  }
 })
