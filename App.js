@@ -1,6 +1,6 @@
 import React from 'react'
 import Timer from './components/Timer.js'
-import { TextInput, StyleSheet, View } from 'react-native'
+import { TextInput, StatusBar, StyleSheet, View } from 'react-native'
 
 export default class App extends React.Component {
   constructor(props) {
@@ -13,6 +13,7 @@ export default class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
+        <StatusBar barStyle="light-content" translucent={true} />
         { this.state.showWorkTimer && (
           <Timer workMode={this.state.showWorkTimer} />
         ) }
@@ -24,7 +25,7 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#1a202c',
     alignItems: 'center',
     justifyContent: 'center',
   },

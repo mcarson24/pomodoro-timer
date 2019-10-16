@@ -1,5 +1,5 @@
 import React from 'react'
-import {Button, Text, TextInput, StyleSheet, Vibration, View} from 'react-native'
+import {Button, Text, TextInput, TouchableOpacity, StyleSheet, Vibration, View} from 'react-native'
 
 export default class Timer extends React.Component {
 	constructor(props) {
@@ -106,14 +106,20 @@ export default class Timer extends React.Component {
 
 	render() {
 		return (
-			<View>
+			<View style={styles.timerContainer}>
 				{!this.state.showInputs && (
 					<View>
-		        <Text style={styles.timerTitle}>{this.title()}</Text>
-		        <Text style={styles.timer}>{this.humanReadableTime()}</Text>
+						<View style={styles.timerHeader}>
+			        <Text style={styles.timerTitle}>{this.title()}</Text>
+			        <Text style={styles.timer}>{this.humanReadableTime()}</Text>
+						</View>	
 		        <View style={styles.buttonContainer}>
-		          <Button title="Start" onPress={this.countdown} />
-		          <Button title="Pause" onPress={this.pause} />
+		          <TouchableOpacity style={styles.timerButtons} onPress={this.countdown}>
+		          	<Text style={styles.timerButtonsText}>Start</Text>
+	          	</TouchableOpacity>
+	          	<TouchableOpacity style={styles.timerButtons} onPress={this.pause}>
+	          		<Text style={styles.timerButtonsText}>Pause</Text>
+	          	</TouchableOpacity>
 		        </View>
 		        <Button title="Reset" onPress={this.reset} />
 	        </View>
@@ -143,15 +149,39 @@ export default class Timer extends React.Component {
 }
 
 const styles = StyleSheet.create({
+	timerContainer: {
+		width: '85%',
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
+	timerHeader: {
+		alignItems: 'center'
+	},
 	timerTitle: {
-    fontSize: 24
+    fontSize: 24,
+    color: '#a0aec0'
   },
   timer: {
-    fontSize: 56
+    fontSize: 56,
+    color: '#fff'
   },
   buttonContainer: {
     display: 'flex',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    width: '55%'
+  },
+  timerButtons: {
+  	backgroundColor: '#000',
+  	color: '#fff',
+  	flex: 1,
+  	justifyContent: 'center',
+  	alignItems: 'center',
+  	paddingVertical: 15,
+  	borderRadius: 5,
+  	marginHorizontal: 10
+  },
+  timerButtonsText: {
+  	color: '#FFF',
   },
   inputs: {
   	backgroundColor: '#cbd5e0',
