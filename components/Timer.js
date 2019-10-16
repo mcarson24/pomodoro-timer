@@ -11,7 +11,7 @@ export default class Timer extends React.Component {
 
 		this.state = {
 			workMode: true,
-			desiredWorkTime: 60000,
+			desiredWorkTime: START_TIME_WORK,
       desiredBreakTime: START_TIME_BREAK,
       currentTime: '',
       intervalId: '',
@@ -27,8 +27,6 @@ export default class Timer extends React.Component {
   }
 
   countdown = () => {
-  	if (this.state.timerIsActive) return
-
     const intervalId = setInterval(() => {
       if (this.state.currentTime === 0) {
         Vibration.vibrate([500, 500, 500])
@@ -59,6 +57,8 @@ export default class Timer extends React.Component {
   }
 
   startTimer = () => {
+  	if (this.state.timerIsActive) return
+		
   	this.setState({
   		timerIsActive: true
   	})
@@ -150,7 +150,7 @@ export default class Timer extends React.Component {
 			        <Text style={styles.timer}>{this.humanReadableTime()}</Text>
 						</View>	
 		        <View style={styles.buttonContainer}>
-		          <TouchableOpacity style={styles.timerButtons} onPress={this.countdown}>
+		          <TouchableOpacity style={styles.timerButtons} onPress={this.startTimer}>
 		          	<Text style={styles.timerButtonsText}>Start</Text>
 	          	</TouchableOpacity>
 	          	<TouchableOpacity style={styles.timerButtons} onPress={this.pause}>
