@@ -1,5 +1,6 @@
 import React from 'react'
 import {Button, Text, TextInput, TouchableOpacity, StyleSheet, Vibration, View} from 'react-native'
+import Constants from 'expo-constants'
 
 export default class Timer extends React.Component {
 	constructor(props) {
@@ -107,6 +108,14 @@ export default class Timer extends React.Component {
 	render() {
 		return (
 			<View style={styles.timerContainer}>
+				<View style={styles.timerToggles}>
+					<TouchableOpacity onPress={this.switchTimer} style={[ this.state.workMode ? styles.timerToggleButtonActive : styles.timerToggleButton]}>
+						<Text>Work Timer</Text>
+					</TouchableOpacity>
+					<TouchableOpacity onPress={this.switchTimer} style={[ this.state.workMode ? styles.timerToggleButton : styles.timerToggleButtonActive]}>
+						<Text>Break Timer</Text>
+					</TouchableOpacity>
+				</View>
 				{!this.state.showInputs && (
 					<View>
 						<View style={styles.timerHeader}>
@@ -124,11 +133,11 @@ export default class Timer extends React.Component {
 		        <Button title="Reset" onPress={this.reset} />
 	        </View>
 				)}
-        { this.state.currentTime === 0 && (
-          <Button title="Switch Timer"
-                  onPress={this.switchTimer} /> 
-        )}
         <View>
+	        { this.state.currentTime === 0 && (
+	          <Button title="Switch Timer"
+	                  onPress={this.switchTimer} /> 
+	        )}
         	<Button title="Change Times" onPress={this.toggleInputs}/>
         	{this.state.showInputs && (
         		<View>
@@ -150,9 +159,25 @@ export default class Timer extends React.Component {
 
 const styles = StyleSheet.create({
 	timerContainer: {
+		marginTop: Constants.statusBarHeight,
 		width: '85%',
-		justifyContent: 'center',
+		flex: 1,
+		flexDirection: 'column',
+		justifyContent: 'space-between',
 		alignItems: 'center'
+	},
+	timerToggles: {
+		flexDirection: 'row',
+	},
+	timerToggleButton: {
+		backgroundColor: '#5a67d8',
+		padding: 10,
+		paddingHorizontal: 15,
+	},
+	timerToggleButtonActive: {
+		backgroundColor: '#383F85',
+		padding: 10,
+		paddingHorizontal: 15,
 	},
 	timerHeader: {
 		alignItems: 'center'
@@ -171,7 +196,7 @@ const styles = StyleSheet.create({
     width: '55%'
   },
   timerButtons: {
-  	backgroundColor: '#000',
+  	backgroundColor: '#5a67d8',
   	color: '#fff',
   	flex: 1,
   	justifyContent: 'center',
