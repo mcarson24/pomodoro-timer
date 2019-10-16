@@ -91,6 +91,13 @@ export default class Timer extends React.Component {
   	this.pause()
   }
 
+  reset = () => {
+  	this.setState(prevState => ({
+  		currentTime: prevState.workMode ? prevState.desiredWorkTime : prevState.desiredBreakTime,
+  	}))
+  	this.pause()
+  }
+
   toggleInputs = () => {
   	this.setState(prevState => ({
   		showInputs: !prevState.showInputs
@@ -108,6 +115,7 @@ export default class Timer extends React.Component {
 		          <Button title="Start" onPress={this.countdown} />
 		          <Button title="Pause" onPress={this.pause} />
 		        </View>
+		        <Button title="Reset" onPress={this.reset} />
 	        </View>
 				)}
         { this.state.currentTime === 0 && (
