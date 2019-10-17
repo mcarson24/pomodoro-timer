@@ -15,18 +15,12 @@ export default class Timer extends React.Component {
 			workMode: true,
 			desiredWorkTime: START_TIME_WORK,
       desiredBreakTime: START_TIME_BREAK,
-      currentTime: '',
+      currentTime: START_TIME_WORK,
       intervalId: '',
       showInputs: false,
       timerIsActive: false,
 		}
 	}
-
-  componentDidMount() {
-    this.setState(prevState=> ({
-      currentTime: prevState.desiredWorkTime
-    }))
-  }
 
   countdown = () => {
     const intervalId = setInterval(() => {
