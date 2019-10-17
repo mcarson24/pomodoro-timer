@@ -44,18 +44,6 @@ export default class Timer extends React.Component {
     })
   }
 
-  updateCurrentTime = () => {
-  	if (this.state.workMode) {
-  		this.setState(prevState => ({
-  			currentTime: prevState.desiredWorkTime
-  		}))
-  	} else {
-  		this.setState(prevState => ({
-  			currentTime: prevState.desiredBreakTime
-  		}))
-  	}
-  }
-
   startTimer = () => {
   	if (this.state.timerIsActive) return
 		
@@ -95,25 +83,27 @@ export default class Timer extends React.Component {
   handleWorkTimeChange = newTime => {
   	newTime = parseInt(newTime)
   	if (newTime === 0) return
+  	const oldTime = this.state.currentTime
   	const newTimeInMilliseconds = newTime * 60 * 1000
 
   	this.setState(prevState => ({
   		desiredWorkTime: newTimeInMilliseconds,
-  		currentTime: prevState.workMode ? newTimeInMilliseconds : prevState.currentTime
+  		currentTime: prevState.workMode ? newTimeInMilliseconds : oldTime
   	}) )
-  	this.pause()
+  	if (this.state.workMode) this.pause()
   }
 
   handleBreakTimeChange = newTime => {
   	newTime = parseInt(newTime)
   	if (newTime === 0) return
+  	const oldTime = this.state.currentTime
   	const newTimeInMilliseconds = newTime * 60 * 1000
 
   	this.setState(prevState => ({
   		desiredBreakTime: newTimeInMilliseconds,
-  		currentTime: !prevState.workMode ? newTimeInMilliseconds : prevState.currentTime
+  		currentTime: !prevState.workMode ? newTimeInMilliseconds : oldTime
   	}))
-  	this.pause()
+  	if (!this.state.workMode) this.pause()
   }
 
   reset = () => {
