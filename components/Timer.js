@@ -1,6 +1,8 @@
 import React from 'react'
-import {Button, Text, TextInput, TouchableOpacity, StyleSheet, Vibration, View} from 'react-native'
+import TimeInput from './TimeInput.js'
 import Constants from 'expo-constants'
+import colors from '../utils/colors.js'
+import {Button, Text, TextInput, TouchableOpacity, StyleSheet, Vibration, View} from 'react-native'
 
 const START_TIME_WORK = 25 * 60 * 1000
 const START_TIME_BREAK = 5 * 60 * 1000
@@ -82,7 +84,7 @@ export default class Timer extends React.Component {
 
   handleWorkTimeChange = newTime => {
   	newTime = parseInt(newTime)
-  	if (newTime === 0) return
+  	if (newTime === 0 || isNaN(newTime)) return
   	const oldTime = this.state.currentTime
   	const newTimeInMilliseconds = newTime * 60 * 1000
 
@@ -95,7 +97,7 @@ export default class Timer extends React.Component {
 
   handleBreakTimeChange = newTime => {
   	newTime = parseInt(newTime)
-  	if (newTime === 0) return
+  	if (newTime === 0 || isNaN(newTime)) return
   	const oldTime = this.state.currentTime
   	const newTimeInMilliseconds = newTime * 60 * 1000
 
@@ -157,24 +159,14 @@ export default class Timer extends React.Component {
         <View style={{width: '100%', flexDirection: 'column', alignItems: 'center'}}>
         	{this.state.showInputs && (
         		<View >
-	        		<Text style={styles.inputLabels}>Work Time 
-	        			<Text style={{fontSize: 12}}>(in minutes)</Text>:
-        			</Text>
-		        	<TextInput onChangeText={this.handleWorkTimeChange}
-		                   	 keyboardType="numeric"
-		                   	 style={styles.inputs}
-		                   	 placeholder={(this.state.desiredWorkTime / 1000 / 60).toString()}
-		                   	 placeholderTextColor="#000"
-		                   	 />
-	        		<Text style={styles.inputLabels}>Break Time
-	        			<Text style={{fontSize: 12}}>(in minutes)</Text>:
-	        		</Text>
-			        <TextInput onChangeText={this.handleBreakTimeChange}
-		                   	 keyboardType="numeric"
-		                   	 style={styles.inputs}
-		                   	 placeholder={(this.state.desiredBreakTime / 1000 / 60).toString()}
-		                   	 placeholderTextColor="#000"
-		                   	 />
+        			<TimeInput onUpdateTime={this.handleWorkTimeChange}
+        								 label="Work Time"
+        								 placeholder={this.state.desiredWorkTime} 
+        											 />
+        			<TimeInput onUpdateTime={this.handleBreakTimeChange}
+        								 label="Break Time"
+        								 placeholder={this.state.desiredBreakTime}
+        								 />
          	 	</View>
       		)}
       		<TouchableOpacity onPress={this.toggleInputs}>
@@ -187,14 +179,6 @@ export default class Timer extends React.Component {
       </View>
 		)
 	}
-}
-
-const colors = {
-	indigo: '#5a67d8',
-	indigoDarker: '#383F85',
-	white: '#fff',
-	grayLighter: '#edf2f7',
-	grayDarker: '#a0aec0'
 }
 
 const styles = StyleSheet.create({
@@ -257,20 +241,6 @@ const styles = StyleSheet.create({
   timerButtonsText: {
   	color: colors.white,
   	fontSize: 18,
-  },
-  inputs: {
-  	backgroundColor: colors.grayLighter,
-  	marginBottom: 15,
-  	padding: 5,
-  	paddingVertical: 15,
-  	borderRadius: 5,
-  	fontSize: 16,
-  	paddingLeft: 15
-  },
-  inputLabels: {
-  	fontSize: 20,
-  	marginBottom: 10,
-  	color: colors.grayDarker
   },
   updateButton: {
   	color: colors.grayLighter, 
