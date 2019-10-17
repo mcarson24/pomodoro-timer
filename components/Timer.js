@@ -122,7 +122,7 @@ export default class Timer extends React.Component {
 
 	render() {
 		return (
-			<View style={styles.timerContainer}>
+			<View style={[styles.center, styles.timerContainer]}>
 				<View style={styles.timerToggles}>
 					<TouchableOpacity onPress={this.switchTimer} disabled={this.state.workMode}
 														style={[styles.timerToggleButton, this.state.workMode ? styles.timerToggleButtonActive : styles.timerToggleButtonInactive]}>
@@ -135,9 +135,9 @@ export default class Timer extends React.Component {
 				</View>
 				{!this.state.showInputs && (
 					<View>
-						<View style={styles.timerHeader}>
+						<View style={styles.center}>
 			        <Text style={styles.timerTitle}>{this.title()}</Text>
-			        <Text style={styles.timer}>{this.humanReadableTime()}</Text>
+			        <Text style={styles.timeDisplay}>{this.humanReadableTime()}</Text>
 						</View>	
 		        <View style={styles.buttonContainer}>
 		          <TouchableOpacity style={styles.timerButtons} onPress={this.startTimer}>
@@ -148,8 +148,7 @@ export default class Timer extends React.Component {
 	          	</TouchableOpacity>
 		        </View>
 		        <View style={styles.resetContainer}>
-			        <TouchableOpacity onPress={this.reset}
-			        									style={styles.reset}>
+			        <TouchableOpacity onPress={this.reset}>
 			        	<Text style={styles.resetText}>Reset</Text>
 		        	</TouchableOpacity>
 	        	</View>
@@ -199,13 +198,13 @@ const colors = {
 }
 
 const styles = StyleSheet.create({
+	center: {
+		alignItems: 'center'
+	},
 	timerContainer: {
 		marginTop: Constants.statusBarHeight,
-		width: '85%',
 		flex: 1,
-		flexDirection: 'column',
 		justifyContent: 'space-between',
-		alignItems: 'center'
 	},
 	timerToggles: {
 		flexDirection: 'row',
@@ -213,8 +212,8 @@ const styles = StyleSheet.create({
 		overflow: 'hidden'
 	},
 	timerToggleButton: {
-		padding: 10,
 		paddingHorizontal: 15,
+		paddingVertical: 10,
 	},
 	timerToggleButtonText: {
 		color: colors.grayLighter,
@@ -225,31 +224,24 @@ const styles = StyleSheet.create({
 	timerToggleButtonActive: {
 		backgroundColor: colors.indigoDarker,
 	},
-	timerHeader: {
-		alignItems: 'center'
-	},
 	timerTitle: {
     fontSize: 24,
     color: colors.grayDarker
   },
-  timer: {
+  timeDisplay: {
     fontSize: 56,
-    color: colors.white
+    color: colors.white,
   },
   resetContainer: {
   	flexDirection: 'row', 
   	justifyContent: 'center',
-  	paddingTop: 10,
-  },
-  reset: {
-  	padding: 10,
+  	marginTop: 10,
   },
   resetText: {
   	color: colors.grayDarker,
   	fontSize: 16,
   },
   buttonContainer: {
-    display: 'flex',
     flexDirection: 'row',
     width: '55%'
   },
@@ -257,7 +249,6 @@ const styles = StyleSheet.create({
   	backgroundColor: colors.indigo,
   	color: colors.white,
   	flex: 1,
-  	justifyContent: 'center',
   	alignItems: 'center',
   	paddingVertical: 15,
   	borderRadius: 5,
@@ -273,7 +264,6 @@ const styles = StyleSheet.create({
   	padding: 5,
   	paddingVertical: 15,
   	borderRadius: 5,
-  	width: 200,
   	fontSize: 16,
   	paddingLeft: 15
   },
