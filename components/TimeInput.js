@@ -29,6 +29,7 @@ export default class TimeInput extends React.Component {
 	             	   style={styles.inputs}
 	             	   placeholder={this.timeAsString()}
 	             	   placeholderTextColor="#000"
+	             	   value={this.timeAsString()}
 	             	   />
  	   	</View>
 		)

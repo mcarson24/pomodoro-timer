@@ -78,27 +78,36 @@ export default class Timer extends React.Component {
 
   handleWorkTimeChange = newTime => {
   	newTime = parseInt(newTime)
-  	if (newTime === 0 || isNaN(newTime)) return
+  	if (newTime === 0) return
   	const oldTime = this.state.currentTime
   	const newTimeInMilliseconds = newTime * 60 * 1000
 
-  	this.setState(prevState => ({
-  		desiredWorkTime: newTimeInMilliseconds,
-  		currentTime: prevState.workMode ? newTimeInMilliseconds : oldTime
-  	}) )
+  	this.setState(prevState => {
+  		let timeToSave = oldTime
+  		if (prevState.workMode) timeToSave = newTimeInMilliseconds
+			if (isNaN(newTimeInMilliseconds)) timeToSave = oldTime
+  		return {
+	  		desiredWorkTime: newTimeInMilliseconds,
+	  		currentTime: timeToSave
+  		}
+  	})
   	if (this.state.workMode) this.pause()
   }
 
   handleBreakTimeChange = newTime => {
   	newTime = parseInt(newTime)
-  	if (newTime === 0 || isNaN(newTime)) return
+  	if (newTime === 0) return
   	const oldTime = this.state.currentTime
   	const newTimeInMilliseconds = newTime * 60 * 1000
-
-  	this.setState(prevState => ({
-  		desiredBreakTime: newTimeInMilliseconds,
-  		currentTime: !prevState.workMode ? newTimeInMilliseconds : oldTime
-  	}))
+  	this.setState(prevState => {
+  		let timeToSave = oldTime
+  		if (!prevState.workMode) timeToSave = newTimeInMilliseconds
+			if (isNaN(newTimeInMilliseconds)) timeToSave = oldTime
+  		return {
+	  		desiredBreakTime: newTimeInMilliseconds,
+	  		currentTime: timeToSave
+  		}
+  	})
   	if (!this.state.workMode) this.pause()
   }
 
@@ -156,7 +165,7 @@ export default class Timer extends React.Component {
         			<TimeInput onUpdateTime={this.handleWorkTimeChange}
         								 label="Work Time"
         								 placeholder={this.state.desiredWorkTime} 
-        											 />
+        								 />
         			<TimeInput onUpdateTime={this.handleBreakTimeChange}
         								 label="Break Time"
         								 placeholder={this.state.desiredBreakTime}
