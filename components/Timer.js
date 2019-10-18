@@ -23,6 +23,7 @@ export default class Timer extends React.Component {
 	}
 
   countdown = () => {
+  	console.log(this.state)
     const intervalId = setInterval(() => {
       if (this.state.currentTime === 0) {
         Vibration.vibrate([500, 500, 500])
@@ -69,6 +70,7 @@ export default class Timer extends React.Component {
   	this.setState(prevState => ({
       currentTime: prevState.workMode ? prevState.desiredBreakTime : prevState.desiredWorkTime,
       workMode: !prevState.workMode,
+      timerIsActive: false
     }))
   }
 
@@ -77,35 +79,41 @@ export default class Timer extends React.Component {
   }
 
   handleWorkTimeChange = newTime => {
-  	newTime = parseInt(newTime)
-  	if (newTime === 0) return
   	const oldTime = this.state.currentTime
-  	const newTimeInMilliseconds = newTime * 60 * 1000
-
+  	let newTimeInMilliseconds = parseInt(newTime) * 60 * 1000
   	this.setState(prevState => {
-  		let timeToSave = oldTime
-  		if (prevState.workMode) timeToSave = newTimeInMilliseconds
-			if (isNaN(newTimeInMilliseconds)) timeToSave = oldTime
-  		return {
-	  		desiredWorkTime: newTimeInMilliseconds,
-	  		currentTime: timeToSave
+			if (newTime === '' || isNaN(newTime)) newTimeInMilliseconds = prevState.desiredWorkTime
+  		if (prevState.workMode) {
+  			return {
+  				desiredWorkTime: newTimeInMilliseconds,
+  				currentTime: newTimeInMilliseconds
+  			}
+  		} else {
+  			return {
+  				desiredWorkTime: newTimeInMilliseconds,
+  				currentTime: oldTime
+  			}
   		}
   	})
   	if (this.state.workMode) this.pause()
   }
 
   handleBreakTimeChange = newTime => {
-  	newTime = parseInt(newTime)
-  	if (newTime === 0) return
   	const oldTime = this.state.currentTime
-  	const newTimeInMilliseconds = newTime * 60 * 1000
+  	let newTimeInMilliseconds = parseInt(newTime) * 60 * 1000
+
   	this.setState(prevState => {
-  		let timeToSave = oldTime
-  		if (!prevState.workMode) timeToSave = newTimeInMilliseconds
-			if (isNaN(newTimeInMilliseconds)) timeToSave = oldTime
-  		return {
-	  		desiredBreakTime: newTimeInMilliseconds,
-	  		currentTime: timeToSave
+  		if (newTime === '' || isNaN(newTime)) newTimeInMilliseconds = prevState.desiredBreakTime
+  		if (!prevState.workMode) {
+  			return {
+  				desiredBreakTime: newTimeInMilliseconds,
+  				currentTime: newTimeInMilliseconds
+  			}
+  		} else {
+  			return {
+  				desiredBreakTime: newTimeInMilliseconds,
+  				currentTime: oldTime
+  			}
   		}
   	})
   	if (!this.state.workMode) this.pause()
