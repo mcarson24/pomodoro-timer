@@ -203,11 +203,12 @@ const styles = StyleSheet.create({
 	timerToggles: {
 		flexDirection: 'row',
 		borderRadius: 5,
-		overflow: 'hidden'
+		overflow: 'hidden',
+    'marginTop': 10
 	},
 	timerToggleButton: {
 		paddingHorizontal: 15,
-		paddingVertical: 10,
+		paddingVertical: 15,
 	},
 	timerToggleButtonText: {
 		color: colors.grayLighter,
@@ -223,7 +224,7 @@ const styles = StyleSheet.create({
     color: colors.grayDarker
   },
   timeDisplay: {
-    fontSize: 56,
+    fontSize: 81,
     color: colors.white,
   },
   resetContainer: {
@@ -233,7 +234,7 @@ const styles = StyleSheet.create({
   },
   resetText: {
   	color: colors.grayDarker,
-  	fontSize: 16,
+  	fontSize: 20,
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -250,7 +251,7 @@ const styles = StyleSheet.create({
   },
   timerButtonsText: {
   	color: colors.white,
-  	fontSize: 18,
+  	fontSize: 24,
   },
   updateButton: {
   	color: colors.grayLighter, 
