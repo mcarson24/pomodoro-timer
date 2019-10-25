@@ -78,7 +78,6 @@ export default class Timer extends React.Component {
   }
 
   handleWorkTimeChange = newTime => {
-    console.log('firing')
   	const oldTime = this.state.currentTime
   	let newTimeInMilliseconds = parseInt(newTime) * 60 * 1000
   	this.setState(prevState => {
@@ -99,7 +98,6 @@ export default class Timer extends React.Component {
   }
 
   handleBreakTimeChange = newTime => {
-    console.log('firing')
   	const oldTime = this.state.currentTime
   	let newTimeInMilliseconds = parseInt(newTime) * 60 * 1000
 
