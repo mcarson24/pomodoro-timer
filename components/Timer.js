@@ -78,6 +78,7 @@ export default class Timer extends React.Component {
   }
 
   handleWorkTimeChange = newTime => {
+    console.log('firing')
   	const oldTime = this.state.currentTime
   	let newTimeInMilliseconds = parseInt(newTime) * 60 * 1000
   	this.setState(prevState => {
@@ -98,6 +99,7 @@ export default class Timer extends React.Component {
   }
 
   handleBreakTimeChange = newTime => {
+    console.log('firing')
   	const oldTime = this.state.currentTime
   	let newTimeInMilliseconds = parseInt(newTime) * 60 * 1000
 
@@ -197,6 +199,7 @@ const styles = StyleSheet.create({
 	},
 	timerContainer: {
 		marginTop: Constants.statusBarHeight,
+    marginBottom: 5,
 		flex: 1,
 		justifyContent: 'space-between',
 	},
@@ -212,6 +215,7 @@ const styles = StyleSheet.create({
 	},
 	timerToggleButtonText: {
 		color: colors.grayLighter,
+    fontSize: 18
 	},
 	timerToggleButtonInactive: {
 		backgroundColor: colors.indigo,
