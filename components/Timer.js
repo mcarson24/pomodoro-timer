@@ -2,7 +2,7 @@ import React from 'react'
 import TimeInput from './TimeInput.js'
 import Constants from 'expo-constants'
 import colors from '../utils/colors.js'
-import {Button, Text, TextInput, TouchableOpacity, StyleSheet, Vibration, View} from 'react-native'
+import {Button, KeyboardAvoidingView, Text, TouchableOpacity, StyleSheet, Vibration, View} from 'react-native'
 
 const START_TIME_WORK = 25 * 60 * 1000
 const START_TIME_BREAK = 5 * 60 * 1000
@@ -23,7 +23,6 @@ export default class Timer extends React.Component {
 	}
 
   countdown = () => {
-  	console.log(this.state)
     const intervalId = setInterval(() => {
       if (this.state.currentTime === 0) {
         Vibration.vibrate([500, 500, 500])
@@ -135,7 +134,7 @@ export default class Timer extends React.Component {
 
 	render() {
 		return (
-			<View style={[styles.center, styles.timerContainer]}>
+			<KeyboardAvoidingView style={[styles.center, styles.timerContainer]} behavior="padding" enabled>
 				<View style={styles.timerToggles}>
 					<TouchableOpacity onPress={this.switchTimer} disabled={this.state.workMode}
 														style={[styles.timerToggleButton, this.state.workMode ? styles.timerToggleButtonActive : styles.timerToggleButtonInactive]}>
@@ -187,7 +186,7 @@ export default class Timer extends React.Component {
       		</TouchableOpacity>
         </View>
         {this.state.showInputs && (<View></View>)}
-      </View>
+      </KeyboardAvoidingView>
 		)
 	}
 }
