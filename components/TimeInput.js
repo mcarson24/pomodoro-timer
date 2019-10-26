@@ -26,11 +26,11 @@ export default class TimeInput extends React.Component {
 	  			<Text style={{fontSize: 12}}>(in minutes)</Text>:
 				</Text>
 				<TextInput onChangeText={debounce(this.props.onUpdateTime, 750)}
-	             	   keyboardType="numeric"
-	             	   style={styles.inputs}
-	             	   placeholder={this.timeAsString()}
-	             	   placeholderTextColor="#777"
-	             	   />
+	             	   	   keyboardType="numeric"
+	             	       style={styles.inputs}
+	             	       placeholder={this.timeAsString()}
+	             	       placeholderTextColor="#777"
+	             	       />
  	   	</View>
 		)
 	}

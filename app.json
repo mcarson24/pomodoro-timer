@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Project 1: Pomodor Timer for CS50's Mobile App Development with React Native",
+    "name": "CS50 Mobile: Project 1 - Pomodoro Timer",
     "slug": "project1",
     "privacy": "public",
     "sdkVersion": "35.0.0",
@@ -25,6 +25,8 @@
     ],
     "ios": {
       "supportsTablet": true
-    }
+    },
+    "description": "Project 1: Pomodor Timer for CS50's Mobile App Development with React Native",
+    "githubUrl": "https://github.com/mcarson24/pomodoro-timer"
   }
 }

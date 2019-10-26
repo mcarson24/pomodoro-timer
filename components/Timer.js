@@ -240,7 +240,6 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: 'row',
-    width: '55%'
   },
   timerButtons: {
   	backgroundColor: colors.indigo,
@@ -249,7 +248,9 @@ const styles = StyleSheet.create({
   	alignItems: 'center',
   	paddingVertical: 15,
   	borderRadius: 5,
-  	marginHorizontal: 10
+  	marginHorizontal: 10,
+    flexDirection: 'column',
+    justifyContent: 'center',
   },
   timerButtonsText: {
   	color: colors.white,
